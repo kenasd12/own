@@ -13,17 +13,13 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    environment: testing
     runs-on: ubuntu-latest
     env:
       PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
-      - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -34,18 +30,16 @@ jobs:
       - name: run test
         run: npm run test
   build:
-    environment: building
+    runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
     needs: [test]
-    runs-on: ubuntu-latest
     steps:
       - name: get code
         uses: actions/checkout@v3
-      - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -66,13 +60,12 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
-      - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
       - name: download artifacts
         uses: actions/download-artifact@v3
         with:
