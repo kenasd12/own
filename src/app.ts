@@ -7,7 +7,7 @@ dotenv.config();
 
 app.get("/", (req, res) => {
  const result = sum(2, 3);
- res.json({ message: "Hello World fork again", result });
+ res.json({ message: "Hello World", result });
 });
 
 const PORT = process.env.PORT;
