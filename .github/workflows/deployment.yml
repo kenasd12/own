@@ -1,0 +1,70 @@
+name: Deployment
+on: 
+  pull_request:
+    types:
+      - opened
+      - closed
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**/*'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: install dependencies
+        run: npm ci
+      - name: run test
+        run: npm run test
+  build:
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: install dependencies
+        run: npm ci
+      - name: build project
+        run: npm run build
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: 'dist'
+      - name: publish js file
+        id: publish
+        run: find dist/app.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: show downloaded artifact hashFiles
+        run: ls
+      - name: run main
+        run: echo "${{ needs.build.outputs.script-file }}"
+      - name: deploy project
+        run: echo "deploying..."
