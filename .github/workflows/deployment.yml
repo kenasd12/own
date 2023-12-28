@@ -18,6 +18,11 @@ jobs:
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: install dependencies
         run: npm ci
       - name: run test
@@ -28,17 +33,29 @@ jobs:
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: install dependencies
         run: npm ci
       - name: build project
         run: npm run build
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: 'dist'
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: get code
         uses: actions/checkout@v3
-      - name: install dependencies
-        run: npm ci
+      - name: download artifacts
+        uses: actions/download-artifact
+        with:
+          name: dist-files
       - name: deploy project
         run: echo "deploying..."
