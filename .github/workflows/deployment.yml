@@ -13,10 +13,11 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    environment: testing
     runs-on: ubuntu-latest
+    environment: testing
     env:
       PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
@@ -34,11 +35,14 @@ jobs:
       - name: run test
         run: npm run test
   build:
+    runs-on: ubuntu-latest
     environment: building
+    env:
+      PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
     needs: [test]
-    runs-on: ubuntu-latest
     steps:
       - name: get code
         uses: actions/checkout@v3
@@ -66,6 +70,9 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
+      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
