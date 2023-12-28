@@ -7,8 +7,8 @@ on:
       - main
   push:
     branches:
-      - 'dev-*'
-      - 'feature/**'
+      - 'dev*'
+      - 'feat/**'
     paths-ignore:
       - '.github/workflows/**/*'
   workflow_dispatch:
