@@ -1,0 +1,39 @@
+{
+  "name": "own",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "npx tsc --build",
+    "test": "jest",
+    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon --delay 2000ms  dist/app.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenasd12/own.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kenasd12/own/issues"
+  },
+  "homepage": "https://github.com/kenasd12/own#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-typescript": "^7.23.3",
+    "@jest/globals": "^29.7.0",
+    "@types/express": "^4.17.21",
+    "babel-jest": "^29.7.0",
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  }
+}
