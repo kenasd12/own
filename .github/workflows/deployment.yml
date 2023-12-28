@@ -14,12 +14,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: testing
     env:
       PORT: ${{ secrets.PORT }}
       REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: print env
+        run: |
+          echo "port: ${{ env.PORT }}" > "test-secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "test-secrets.txt"
+      - name: upload artifacts test-secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-secrets
+          path: 'test-secrets.txt'
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -31,6 +41,7 @@ jobs:
         run: npm run test
   build:
     runs-on: ubuntu-latest
+    environment: building
     env:
       PORT: ${{ secrets.PORT }}
       REPO_PORT: ${{ secrets.REPO_PORT }}
@@ -40,6 +51,15 @@ jobs:
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: print env
+        run: |
+          echo "port: ${{ env.PORT }}" > "build-secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "build-secrets.txt"
+      - name: upload artifacts build-secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-secrets
+          path: 'build-secrets.txt'
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -66,6 +86,33 @@ jobs:
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: print env
+        run: |
+          echo "port: ${{ env.PORT }}" > "deploy-secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "deploy-secrets.txt"
+      - name: upload artifacts deploy-secrets
+        uses: actions/upload-artifact@v3
+        with:
+          name: deploy-secrets
+          path: 'deploy-secrets.txt'
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: test-secrets
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-secrets
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: deploy-secrets
+      - name: show downloaded artifact test-secrets
+        run: cat test-secrets.txt
+      - name: show downloaded artifact test-secrets
+        run: cat build-secrets.txt
+      - name: show downloaded artifact test-secrets
+        run: cat deploy-secrets.txt
       - name: download artifacts
         uses: actions/download-artifact@v3
         with:
