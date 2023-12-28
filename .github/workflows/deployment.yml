@@ -14,9 +14,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
+      - name: print env
+        run: echo "${{ env.PORT }}"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
