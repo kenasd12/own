@@ -54,8 +54,10 @@ jobs:
       - name: get code
         uses: actions/checkout@v3
       - name: download artifacts
-        uses: actions/download-artifact
+        uses: actions/download-artifact@v3
         with:
           name: dist-files
+      - name: show downloaded artifact hashFiles
+        run: ls
       - name: deploy project
         run: echo "deploying..."
