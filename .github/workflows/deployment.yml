@@ -23,8 +23,13 @@ jobs:
         uses: actions/checkout@v3
       - name: print env
         run: |
-          echo "port: ${{ env.PORT }}" 
-          echo "repo_port: ${{ env.REPO_PORT }}"
+          echo "port: ${{ env.PORT }}" > "secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "secrets.txt"
+      - name: secret artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: SecretsVariables
+          path: "secrets.txt"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -48,8 +53,13 @@ jobs:
         uses: actions/checkout@v3
       - name: print env
         run: |
-          echo "port: ${{ env.PORT }}" 
-          echo "repo_port: ${{ env.REPO_PORT }}" 
+          echo "port: ${{ env.PORT }}" > "secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "secrets.txt"
+      - name: secret artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: SecretsVariables
+          path: "secrets.txt"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -78,8 +88,13 @@ jobs:
         uses: actions/checkout@v3
       - name: print env
         run: |
-          echo "port: ${{ env.PORT }}" 
-          echo "repo_port: ${{ env.REPO_PORT }}" 
+          echo "port: ${{ env.PORT }}" > "secrets.txt"
+          echo "repo_port: ${{ env.REPO_PORT }}" >> "secrets.txt" 
+      - name: secret artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: SecretsVariables
+          path: "secrets.txt"
       - name: download artifacts
         uses: actions/download-artifact@v3
         with:
