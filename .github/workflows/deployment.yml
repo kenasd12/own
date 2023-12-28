@@ -22,9 +22,9 @@ jobs:
       - name: get code
         uses: actions/checkout@v3
       - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
+        run: |
+          echo "port: ${{ env.PORT }}" 
+          echo "repo_port: ${{ env.REPO_PORT }}"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -47,9 +47,9 @@ jobs:
       - name: get code
         uses: actions/checkout@v3
       - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
+        run: |
+          echo "port: ${{ env.PORT }}" 
+          echo "repo_port: ${{ env.REPO_PORT }}" 
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -77,9 +77,9 @@ jobs:
       - name: get code
         uses: actions/checkout@v3
       - name: print env
-        run: echo "${{ env.PORT }}"
-      - name: print repo_env
-        run: echo "${{ env.REPO_PORT }}"
+        run: |
+          echo "port: ${{ env.PORT }}" 
+          echo "repo_port: ${{ env.REPO_PORT }}" 
       - name: download artifacts
         uses: actions/download-artifact@v3
         with:
