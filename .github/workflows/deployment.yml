@@ -1,0 +1,44 @@
+name: Deployment
+on: 
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
+  push:
+    branches:
+      - 'dev-*'
+      - 'feature/**'
+    paths-ignore:
+      - '.github/workflows/**/*'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm ci
+      - name: run test
+        run: npm run test
+  build:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm ci
+      - name: build project
+        run: npm run build
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm ci
+      - name: deploy project
+        run: echo "deploying..."
