@@ -25,11 +25,6 @@ jobs:
         run: |
           echo "test-port: ${{ env.PORT }}" > "secrets.txt"
           echo "test-repo_port: ${{ env.REPO_PORT }}" >> "secrets.txt"
-      - name: secret artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-secrets
-          path: "secrets.txt"
       - name: cache dependencies
         uses: actions/cache@v3
         with:
@@ -69,11 +64,6 @@ jobs:
         run: npm ci
       - name: build project
         run: npm run build
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-files
-          path: 'dist'
       - name: publish js file
         id: publish
         run: find dist/app.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
@@ -90,17 +80,6 @@ jobs:
         run: |
           echo "deploy-port: ${{ env.PORT }}" > "secrets.txt"
           echo "deploy-repo_port: ${{ env.REPO_PORT }}" >> "secrets.txt" 
-      - name: secret artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: deploy-secret
-          path: "secrets.txt"
-      - name: download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-files
-      - name: show downloaded artifact hashFiles
-        run: ls
       - name: run main
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: deploy project
