@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "npx tsc --build",
-    "test": "jest",
+    "test": "jest --",
     "dev": "concurrently --kill-others \"tsc -w\" \"nodemon --delay 2000ms  dist/app.js\""
   },
   "repository": {
@@ -35,5 +35,10 @@
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "typescript": "^5.3.3"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist"
+    ]
   }
 }
