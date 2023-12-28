@@ -14,9 +14,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      PORT: ${{ secrets.PORT }}
-      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
@@ -31,9 +28,6 @@ jobs:
         run: npm run test
   build:
     runs-on: ubuntu-latest
-    env:
-      PORT: ${{ secrets.PORT }}
-      REPO_PORT: ${{ secrets.REPO_PORT }}
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
     needs: [test]
@@ -60,9 +54,6 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    env:
-      PORT: ${{ secrets.PORT }}
-      REPO_PORT: ${{ secrets.REPO_PORT }}
     steps:
       - name: get code
         uses: actions/checkout@v3
